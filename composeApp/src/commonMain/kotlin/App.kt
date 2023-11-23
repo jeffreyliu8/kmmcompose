@@ -24,13 +24,18 @@ fun App() {
     MaterialTheme {
         val viewModel = getViewModel(
             key = "main-screen-vm",
-            factory = viewModelFactory { MainViewModel() }
+            factory = viewModelFactory {
+                MainViewModel(
+                    repository = MainRepositoryImpl()
+                )
+            }
         )
         val state by viewModel.uiState.collectAsState()
         var greetingText by remember { mutableStateOf("Hello World!") }
         var showImage by remember { mutableStateOf(false) }
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(state.time.toString())
+            Text(state.fromRepoValue.toString())
             Button(onClick = {
                 greetingText = "Compose: ${Greeting().greet()}"
                 showImage = !showImage

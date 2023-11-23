@@ -3,11 +3,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-//    private val repository: MainRepository
+    private val repository: MainRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -15,6 +19,7 @@ class MainViewModel(
 
     init {
         updateClock()
+        observeFlowFromRepo()
     }
 
     private fun updateClock() {
@@ -30,8 +35,23 @@ class MainViewModel(
             }
         }
     }
+
+    private fun observeFlowFromRepo() {
+        repository.getSomeFlow()
+            .onEach { value ->
+                _uiState.update {
+                    it.copy(
+                        fromRepoValue = value,
+                    )
+                }
+            }
+            .catch { println("error $it") }
+            .flowOn(Dispatchers.Default)
+            .launchIn(viewModelScope)
+    }
 }
 
 data class MainUiState(
     val time: Int = 0,
+    val fromRepoValue: Int = 0,
 )
