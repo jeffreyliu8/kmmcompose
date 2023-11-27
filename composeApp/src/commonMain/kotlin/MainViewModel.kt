@@ -1,4 +1,3 @@
-import app.cash.sqldelight.db.SqlDriver
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,9 +23,9 @@ class MainViewModel(
         observeFlowFromRepo()
     }
 
-    fun onPerformDbTasks(driver: SqlDriver){
+    fun onPerformDbTasks() {
         viewModelScope.launch {
-            databaseRepository.doDatabaseThings(driver)
+            databaseRepository.doDatabaseThings()
         }
     }
 

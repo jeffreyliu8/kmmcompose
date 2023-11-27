@@ -29,8 +29,8 @@ fun App(
             key = "main-screen-vm",
             factory = viewModelFactory {
                 MainViewModel(
-                    repository = MainRepositoryImpl(),
-                    databaseRepository = DatabaseRepositoryImpl()
+                    repository = appModule.mainRepository,
+                    databaseRepository = appModule.databaseRepository,
                 )
             }
         )
@@ -42,7 +42,7 @@ fun App(
             Text(state.time.toString())
             Text(state.fromRepoValue.toString())
             Button(onClick = {
-                viewModel.onPerformDbTasks(appModule.sqlDriver)
+                viewModel.onPerformDbTasks()
             }) {
                 Text("Perform db tasks")
             }

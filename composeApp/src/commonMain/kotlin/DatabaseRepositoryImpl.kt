@@ -1,14 +1,18 @@
 import app.cash.sqldelight.db.SqlDriver
 import com.example.Database
 import com.example.database.AppDatabaseQueries
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
-class DatabaseRepositoryImpl: DatabaseRepository {
+class DatabaseRepositoryImpl(
+    private val driver: SqlDriver
+) : DatabaseRepository {
     override fun getSomeDbData(): Flow<Int> {
         TODO("Not yet implemented")
     }
 
-    override fun doDatabaseThings(driver: SqlDriver) {
+    override suspend fun doDatabaseThings() = withContext(Dispatchers.Default) {
         val database = Database(driver)
         val playerQueries: AppDatabaseQueries = database.appDatabaseQueries
 
