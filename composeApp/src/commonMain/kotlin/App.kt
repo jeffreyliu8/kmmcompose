@@ -15,27 +15,37 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import dev.icerock.moko.mvvm.compose.getViewModel
 import dev.icerock.moko.mvvm.compose.viewModelFactory
+import di.AppModule
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun App() {
+fun App(
+    appModule: AppModule,
+) {
     MaterialTheme {
         val viewModel = getViewModel(
             key = "main-screen-vm",
             factory = viewModelFactory {
                 MainViewModel(
-                    repository = MainRepositoryImpl()
+                    repository = MainRepositoryImpl(),
+                    databaseRepository = DatabaseRepositoryImpl()
                 )
             }
         )
         val state by viewModel.uiState.collectAsState()
         var greetingText by remember { mutableStateOf("Hello World!") }
         var showImage by remember { mutableStateOf(false) }
+
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(state.time.toString())
             Text(state.fromRepoValue.toString())
+            Button(onClick = {
+                viewModel.onPerformDbTasks(appModule.sqlDriver)
+            }) {
+                Text("Perform db tasks")
+            }
             Button(onClick = {
                 greetingText = "Compose: ${Greeting().greet()}"
                 showImage = !showImage

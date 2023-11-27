@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+
+    kotlin("plugin.serialization").version("1.9.20")
+    id("app.cash.sqldelight") version "2.0.0"
 }
 
 kotlin {
@@ -32,16 +35,28 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
-            isStatic = true
+            isStatic = false // false for sqldelight
         }
     }
-    
+
+    val coroutinesVersion = "1.7.3"
+    val ktorVersion = "2.3.5"
+    val sqlDelightVersion = "2.0.0"
+    val dateTimeVersion = "0.4.1"
+
     sourceSets {
-        
         androidMain.dependencies {
             implementation(libs.compose.ui)
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+
+//            implementation("io.ktor:ktor-client-android:$ktorVersion")
+            implementation("app.cash.sqldelight:android-driver:$sqlDelightVersion")
+        }
+        iosMain.dependencies {
+//            implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
+
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -93,9 +108,17 @@ android {
     }
 }
 
-dependencies{
+dependencies {
     commonMainApi(libs.mvvm.core)
     commonMainApi(libs.mvvm.compose)
     commonMainApi(libs.mvvm.flow)
     commonMainApi(libs.mvvm.flow.compose)
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.example")
+        }
+    }
 }

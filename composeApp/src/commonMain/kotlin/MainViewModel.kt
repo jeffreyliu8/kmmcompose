@@ -1,3 +1,4 @@
+import app.cash.sqldelight.db.SqlDriver
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -11,7 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: MainRepository
+    private val repository: MainRepository,
+    private val databaseRepository: DatabaseRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -20,6 +22,12 @@ class MainViewModel(
     init {
         updateClock()
         observeFlowFromRepo()
+    }
+
+    fun onPerformDbTasks(driver: SqlDriver){
+        viewModelScope.launch {
+            databaseRepository.doDatabaseThings(driver)
+        }
     }
 
     private fun updateClock() {
