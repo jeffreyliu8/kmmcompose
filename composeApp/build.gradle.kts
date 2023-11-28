@@ -39,10 +39,7 @@ kotlin {
         }
     }
 
-    val coroutinesVersion = "1.7.3"
-    val ktorVersion = "2.3.5"
     val sqlDelightVersion = "2.0.0"
-    val dateTimeVersion = "0.4.1"
 
     sourceSets {
         androidMain.dependencies {
@@ -50,11 +47,12 @@ kotlin {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
 
-//            implementation("io.ktor:ktor-client-android:$ktorVersion")
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
             implementation("app.cash.sqldelight:android-driver:$sqlDelightVersion")
         }
         iosMain.dependencies {
-//            implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            implementation(libs.ktor.client.darwin)
             implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
 
         }
@@ -65,7 +63,14 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
+            implementation("media.kamel:kamel-image:0.9.0")
             implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.serialization)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }

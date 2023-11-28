@@ -10,10 +10,14 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import model.QueryResult
+import repository.DatabaseRepository
+import repository.WebRepository
 
 class MainViewModel(
     private val repository: MainRepository,
     private val databaseRepository: DatabaseRepository,
+    private val webRepository: WebRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(MainUiState())
@@ -29,6 +33,7 @@ class MainViewModel(
         viewModelScope.launch {
             val player = HockeyPlayer(id = 1, player_number = 1, full_name = "Jeffrey Liu")
             databaseRepository.addPlayer(player)
+            makeApiCall()
         }
     }
 
@@ -78,10 +83,22 @@ class MainViewModel(
             .flowOn(Dispatchers.Default)
             .launchIn(viewModelScope)
     }
+
+    private fun makeApiCall(query: String = "square") {
+        viewModelScope.launch {
+            val result = webRepository.searchRepos(query)
+            _uiState.update {
+                it.copy(
+                    queryResult = result,
+                )
+            }
+        }
+    }
 }
 
 data class MainUiState(
     val time: Int = 0,
     val fromRepoValue: Int = 0,
     val players: List<HockeyPlayer> = emptyList(),
+    val queryResult: QueryResult? = null,
 )
