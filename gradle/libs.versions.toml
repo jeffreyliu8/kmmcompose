@@ -13,11 +13,13 @@ androidx-material = "1.10.0"
 androidx-constraintlayout = "2.1.4"
 androidx-test-junit = "1.1.5"
 androidx-espresso-core = "3.5.1"
+kamelImage = "0.9.0"
 kotlin = "1.9.20"
 junit = "4.13.2"
 mvvmCompose = "0.16.1"
 ktor = "2.3.6"
 kotlinx = "1.7.3"
+sqlDelightVersion = "2.0.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -48,6 +50,10 @@ ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kto
 ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx" }
+kamel-image = { module = "media.kamel:kamel-image", version.ref = "kamelImage" }
+sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelightVersion" }
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqlDelightVersion" }
+sqldelight-native = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelightVersion" }
 
 [plugins]
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }

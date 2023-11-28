@@ -39,8 +39,6 @@ kotlin {
         }
     }
 
-    val sqlDelightVersion = "2.0.0"
-
     sourceSets {
         androidMain.dependencies {
             implementation(libs.compose.ui)
@@ -49,12 +47,11 @@ kotlin {
 
             implementation(libs.ktor.client.okhttp)
             implementation(libs.kotlinx.coroutines.android)
-            implementation("app.cash.sqldelight:android-driver:$sqlDelightVersion")
+            implementation(libs.sqldelight.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation("app.cash.sqldelight:native-driver:$sqlDelightVersion")
-
+            implementation(libs.sqldelight.native)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -63,8 +60,8 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
-            implementation("media.kamel:kamel-image:0.9.0")
-            implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
+            implementation(libs.kamel.image)
+            implementation(libs.sqldelight.coroutines)
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.client.serialization)
