@@ -20,23 +20,11 @@ class DatabaseRepositoryImpl(
             .mapToList(Dispatchers.IO)
     }
 
-    override suspend fun doDatabaseThings() = withContext(Dispatchers.Default) {
-//        playerQueries.removeAll()
-//
-//
-//        playerQueries.insert(player_number = 10, full_name = "Corey Perry")
-//        println(playerQueries.selectAll().executeAsList())
-        // [HockeyPlayer(15, "Ryan Getzlaf"), HockeyPlayer(10, "Corey Perry")]
-
-//        val player = HockeyPlayer(10, "Ronald McDonald")
-//        playerQueries.insertFullPlayerObject(player)
-    }
-
-    override suspend fun removeAll() = withContext(Dispatchers.Default) {
+    override suspend fun removeAll() = withContext(Dispatchers.IO) {
         playerQueries.removeAll()
     }
 
-    override suspend fun addPlayer(player: HockeyPlayer) = withContext(Dispatchers.Default) {
+    override suspend fun addPlayer(player: HockeyPlayer) = withContext(Dispatchers.IO) {
         playerQueries.insert(
             id = null,
             player_number = player.player_number,

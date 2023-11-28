@@ -1,7 +1,10 @@
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -34,13 +37,13 @@ fun App(
                 )
             }
         )
-        val state by viewModel.uiState.collectAsState()
+        val uiState by viewModel.uiState.collectAsState()
         var greetingText by remember { mutableStateOf("Hello World!") }
         var showImage by remember { mutableStateOf(false) }
 
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(state.time.toString())
-            Text(state.players.size.toString())
+            Text(uiState.time.toString())
+            Text(uiState.players.size.toString())
             Button(onClick = {
                 viewModel.addPlayer()
             }) {
@@ -62,6 +65,15 @@ fun App(
                     painterResource("compose-multiplatform.xml"),
                     null
                 )
+            }
+        }
+        LazyColumn {
+            items(uiState.players) { player ->
+                Row {
+                    Text(player.id.toString())
+                    Text(player.player_number.toString())
+                    Text(player.full_name)
+                }
             }
         }
     }
