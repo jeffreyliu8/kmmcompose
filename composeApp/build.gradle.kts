@@ -64,6 +64,8 @@ kotlin {
             implementation(compose.material)
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
+
+            implementation("app.cash.sqldelight:coroutines-extensions:$sqlDelightVersion")
         }
     }
 }

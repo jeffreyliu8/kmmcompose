@@ -28,14 +28,10 @@ private class DatabaseImpl(
     override fun create(driver: SqlDriver): QueryResult.Value<Unit> {
       driver.execute(null, """
           |CREATE TABLE hockeyPlayer (
-          |  player_number INTEGER PRIMARY KEY NOT NULL,
+          |  id INTEGER PRIMARY KEY AUTOINCREMENT,
+          |  player_number INTEGER NOT NULL,
           |  full_name TEXT NOT NULL
           |)
-          """.trimMargin(), 0)
-      driver.execute(null, "CREATE INDEX hockeyPlayer_full_name ON hockeyPlayer(full_name)", 0)
-      driver.execute(null, """
-          |INSERT INTO hockeyPlayer (player_number, full_name)
-          |VALUES (15, 'Ryan Getzlaf')
           """.trimMargin(), 0)
       return QueryResult.Unit
     }

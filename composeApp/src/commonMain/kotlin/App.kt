@@ -40,11 +40,16 @@ fun App(
 
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(state.time.toString())
-            Text(state.fromRepoValue.toString())
+            Text(state.players.size.toString())
             Button(onClick = {
-                viewModel.onPerformDbTasks()
+                viewModel.addPlayer()
             }) {
-                Text("Perform db tasks")
+                Text("add")
+            }
+            Button(onClick = {
+                viewModel.removeAllPlayers()
+            }) {
+                Text("remove all")
             }
             Button(onClick = {
                 greetingText = "Compose: ${Greeting().greet()}"

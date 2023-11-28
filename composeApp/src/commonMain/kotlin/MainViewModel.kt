@@ -1,3 +1,4 @@
+import com.example.database.HockeyPlayer
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -21,12 +22,33 @@ class MainViewModel(
     init {
         updateClock()
         observeFlowFromRepo()
+        observePlayersFromDb()
     }
 
-    fun onPerformDbTasks() {
+    fun addPlayer() {
         viewModelScope.launch {
-            databaseRepository.doDatabaseThings()
+            val player = HockeyPlayer(id = 1, player_number = 1, full_name = "Jeffrey Liu")
+            databaseRepository.addPlayer(player)
         }
+    }
+
+    fun removeAllPlayers() {
+        viewModelScope.launch {
+            databaseRepository.removeAll()
+        }
+    }
+
+    private fun observePlayersFromDb() {
+        databaseRepository.getPlayers()
+            .onEach { results ->
+                _uiState.update {
+                    it.copy(
+                        players = results,
+                    )
+                }
+            }.catch { println("error $it") }
+            .flowOn(Dispatchers.Default)
+            .launchIn(viewModelScope)
     }
 
     private fun updateClock() {
@@ -61,4 +83,5 @@ class MainViewModel(
 data class MainUiState(
     val time: Int = 0,
     val fromRepoValue: Int = 0,
+    val players: List<HockeyPlayer> = emptyList(),
 )
